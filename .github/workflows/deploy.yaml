@@ -36,7 +36,7 @@ jobs:
         run: npm clean-install
 
       - name: Build project
-        run: npm run build
+        run: npm run build --
           --base '${{ steps.configure.outputs.base_path }}'
           --site '${{ steps.configure.outputs.origin }}'
 
