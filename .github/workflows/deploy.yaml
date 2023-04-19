@@ -1,0 +1,66 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+concurrency:
+  cancel-in-progress: true
+  group: github-pages
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # https://github.com/actions/configure-pages
+      - id: configure
+        name: Configure GitHub Pages
+        uses: actions/configure-pages@v3
+
+      # https://github.com/actions/checkout
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # https://github.com/actions/setup-node
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          cache: npm
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm clean-install
+
+      - name: Build project
+        run: npm run build
+          --base '${{ steps.configure.outputs.base_path }}'
+          --site '${{ steps.configure.outputs.origin }}'
+
+      # https://github.com/actions/upload-pages-artifact
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./dist
+
+  deploy:
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+
+    permissions:
+      id-token: write
+      pages: write
+
+    steps:
+      # https://github.com/actions/deploy-pages
+      - id: deploy
+        name: Deploy to Github Pages
+        uses: actions/deploy-pages@v2
