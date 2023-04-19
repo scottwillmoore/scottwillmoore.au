@@ -1,0 +1,23 @@
+{
+	"private": true,
+	"name": "scottwillmoore.au",
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"build": "astro build",
+		"check": "npm run check:astro && npm run check:prettier",
+		"check:astro": "astro check",
+		"check:prettier": "prettier --check .",
+		"format": "prettier --write .",
+		"preview": "astro preview",
+		"start": "astro dev"
+	},
+	"dependencies": {
+		"astro": "^2.3.0"
+	},
+	"devDependencies": {
+		"prettier": "^2.8.7",
+		"prettier-plugin-astro": "^0.8.0",
+		"typescript": "^5.0.4"
+	}
+}
