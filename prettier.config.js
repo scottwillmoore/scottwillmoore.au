@@ -1,5 +1,5 @@
 /** @type {import("prettier").Config} */
-module.exports = {
+export default {
 	endOfLine: "auto",
 	printWidth: 100,
 	useTabs: true,

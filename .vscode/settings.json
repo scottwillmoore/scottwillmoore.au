@@ -31,5 +31,15 @@
 	},
 	"[yaml]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	}
+	},
+	"files.readonlyInclude": {
+		".astro/**": true,
+		".direnv/**": true,
+		"dist/**": true,
+		"flake.lock": true,
+		"node_modules/**": true,
+		"package-lock.json": true,
+	},
+	"typescript.tsdk": "node_modules/typescript/lib",
+
 }

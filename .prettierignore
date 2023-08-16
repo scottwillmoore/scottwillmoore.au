@@ -1,4 +1,2 @@
-.astro/
-dist/
-node_modules/
+flake.lock
 package-lock.json
