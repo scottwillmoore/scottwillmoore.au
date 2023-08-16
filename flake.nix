@@ -1,22 +1,42 @@
 {
   inputs = {
-    flake-utilities.url = "github:numtide/flake-utils";
-    nix-packages.url = "github:nixos/nixpkgs/nixos-unstable";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+
+    nix-packages.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+
+    nix-systems.url = "github:nix-systems/default";
   };
-  outputs = {
-    flake-utilities,
+  outputs = inputs @ {
+    flake-parts,
     nix-packages,
+    nix-systems,
     ...
-  }:
-    flake-utilities.lib.eachDefaultSystem (system: let
-      packages = import nix-packages {
-        inherit system;
+  }: let
+    packagesModule = {
+      perSystem = {system, ...}: {
+        _module.args.packages = import nix-packages {
+          inherit system;
+        };
       };
-    in {
-      devShells.default = packages.mkShell {
-        buildInputs = with packages; [
-          nodejs
-        ];
+    };
+
+    systemsModule = {
+      systems = import nix-systems;
+    };
+  in
+    flake-parts.lib.mkFlake {inherit inputs;} {
+      imports = [
+        packagesModule
+        systemsModule
+      ];
+
+      perSystem = {packages, ...}: {
+        devShells.default = with packages;
+          mkShell {
+            nativeBuildInputs = [
+              nodejs
+            ];
+          };
       };
-    });
+    };
 }
