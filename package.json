@@ -1,13 +1,16 @@
 {
+	"$schema": "https://json.schemastore.org/package",
 	"private": true,
 	"name": "scottwillmoore.au",
 	"type": "module",
 	"scripts": {
 		"build": "astro build",
-		"check": "npm run check:astro && npm run check:prettier",
+		"check": "run-s --continue-on-error check:*",
 		"check:astro": "astro check",
 		"check:prettier": "prettier --check .",
-		"format": "prettier --write .",
+		"clean": "rimraf dist/",
+		"fix": "run-s fix:*",
+		"fix:prettier": "prettier --write .",
 		"preview": "astro preview",
 		"start": "astro dev"
 	},
@@ -15,8 +18,10 @@
 		"astro": "^2.3.0"
 	},
 	"devDependencies": {
+		"npm-run-all2": "^6.0.6",
 		"prettier": "^3.0.2",
 		"prettier-plugin-astro": "^0.8.0",
+		"rimraf": "^5.0.1",
 		"typescript": "^5.0.4"
 	}
 }
